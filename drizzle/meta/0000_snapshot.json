@@ -1,5 +1,5 @@
 {
-  "id": "204f2139-65d6-46fb-b53e-7ff41e52d7f9",
+  "id": "9d6bf07c-8877-4f0e-8802-22e119307cfd",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -22,7 +22,7 @@
         },
         "email": {
           "name": "email",
-          "type": "varchar(256)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -31,6 +31,12 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "refresh_token": {
+          "name": "refresh_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},

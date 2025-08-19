@@ -1,98 +1,84 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# API de Autenticação com NestJS e Drizzle
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Esta é uma API de autenticação robusta e segura, construída com NestJS, TypeScript e Drizzle ORM. O projeto segue os princípios da Arquitetura Hexagonal (Portas e Adaptadores) para garantir um código limpo, escalável e de fácil manutenção.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Funcionalidades
 
-## Description
+- **Cadastro e Login de Usuários:** Endpoints para registro (`/sign-up`) e login (`/sign-in`).
+- **Hashing de Senhas:** As senhas são armazenadas de forma segura usando o algoritmo `bcrypt`.
+- **Autenticação baseada em JWT:** Acesso a rotas protegidas através de JSON Web Tokens.
+- **Fluxo de Refresh Tokens:** Mecanismo completo para renovar tokens de acesso sem a necessidade de um novo login, melhorando a experiência do usuário.
+- **Logout:** Endpoint para invalidar o refresh token do usuário, efetivamente fazendo o logout.
+- **Validação de Entrada:** Validação automática de dados de entrada usando `class-validator`.
+- **Rate Limiting:** Proteção contra ataques de força bruta nos endpoints de autenticação.
+- **Documentação de API:** Geração automática de documentação interativa com Swagger (OpenAPI).
+- **Tratamento de Erros Centralizado:** Um filtro de exceção global garante que os erros sejam retornados em um formato JSON consistente.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Arquitetura e Tecnologias
 
-## Project setup
+- **Framework:** [NestJS](https://nestjs.com/)
+- **Linguagem:** [TypeScript](https://www.typescriptlang.org/)
+- **ORM:** [Drizzle ORM](https://orm.drizzle.team/)
+- **Banco de Dados:** Preparado para PostgreSQL
+- **Arquitetura:** Hexagonal (Portas e Adaptadores)
 
-```bash
-$ pnpm install
-```
+## Pré-requisitos
 
-## Compile and run the project
+- [Node.js](https://nodejs.org/en/) (v18+)
+- [pnpm](https://pnpm.io/)
+- [Docker](https://www.docker.com/) (para rodar um banco de dados PostgreSQL localmente)
 
-```bash
-# development
-$ pnpm run start
+## Instalação e Execução
 
-# watch mode
-$ pnpm run start:dev
+1.  **Clone o repositório:**
+    ```bash
+    git clone <URL_DO_REPOSITORIO>
+    cd auth
+    ```
 
-# production mode
-$ pnpm run start:prod
-```
+2.  **Instale as dependências:**
+    ```bash
+    pnpm install
+    ```
 
-## Run tests
+3.  **Configure as variáveis de ambiente:**
+    Copie o arquivo de exemplo e preencha com suas credenciais locais.
+    ```bash
+    cp .env.example .env
+    ```
+    *Não se esqueça de alterar o `DATABASE_URL` e os segredos `JWT_SECRET` e `JWT_REFRESH_SECRET` no arquivo `.env`.*
 
-```bash
-# unit tests
-$ pnpm run test
+4.  **Execute o banco de dados:**
+    Se você tiver o Docker, pode iniciar um container PostgreSQL com o comando:
+    ```bash
+    docker run --name auth-db -e POSTGRES_PASSWORD=docker -e POSTGRES_USER=docker -e POSTGRES_DB=auth-api -p 5432:5432 -d postgres
+    ```
 
-# e2e tests
-$ pnpm run test:e2e
+5.  **Aplique as migrações do banco de dados:**
+    O Drizzle gerencia as alterações de schema. Para aplicar todas as migrações pendentes:
+    ```bash
+    # (Comando para aplicar migrações - a ser adicionado ao package.json)
+    # Por enquanto, pode ser feito com uma ferramenta de banco de dados.
+    ```
 
-# test coverage
-$ pnpm run test:cov
-```
+6.  **Inicie a aplicação em modo de desenvolvimento:**
+    ```bash
+    pnpm run start:dev
+    ```
 
-## Deployment
+## Documentação da API
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Com a aplicação rodando, a documentação interativa do Swagger estará disponível em:
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+[**http://localhost:3000/api**](http://localhost:3000/api)
 
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
-```
+Você pode usar essa interface para visualizar e testar todos os endpoints da API.
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## Migrações do Banco de Dados
 
-## Resources
+Este projeto usa o `drizzle-kit` para gerenciar as migrações do banco de dados.
 
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+-   **Para gerar uma nova migração** após uma alteração nos schemas (em `src/root/infrastructure/schemas/`):
+    ```bash
+    pnpm drizzle-kit generate:pg
+    ```

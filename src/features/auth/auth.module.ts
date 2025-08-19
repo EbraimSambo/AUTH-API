@@ -5,22 +5,15 @@ import { UsersRepositoryImpl } from './adapters/secondary/persistence/users.repo
 import { AuthService } from './application/services/auth.service';
 import { UsersRepository } from './application/ports/users.repository';
 import { AuthController } from './adapters/primary/http/auth.controller';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './adapters/primary/http/strategies/jwt.strategy';
 import { DbModule } from 'src/root/infrastructure/db/db.module';
+import { JwtRefreshStrategy } from './adapters/primary/http/strategies/jwt-refresh.strategy';
 
 @Module({
   imports: [
     DbModule,
     PassportModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: configService.get<string>('EXPIRES_IN'),  },
-      }),
-      inject: [ConfigService],
-    }),
+    JwtModule.register({}),
   ],
   controllers: [AuthController],
   providers: [
@@ -30,6 +23,7 @@ import { DbModule } from 'src/root/infrastructure/db/db.module';
       useClass: UsersRepositoryImpl,
     },
     JwtStrategy,
+    JwtRefreshStrategy,
   ],
 })
 export class AuthModule {}
