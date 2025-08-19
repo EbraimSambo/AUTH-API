@@ -6,8 +6,8 @@ import { AuthService } from './application/services/auth.service';
 import { UsersRepository } from './application/ports/users.repository';
 import { AuthController } from './adapters/primary/http/auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { DbModule } from 'src/db/db.module';
 import { JwtStrategy } from './adapters/primary/http/strategies/jwt.strategy';
+import { DbModule } from 'src/root/infrastructure/db/db.module';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { JwtStrategy } from './adapters/primary/http/strategies/jwt.strategy';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '60m',  },
+        signOptions: { expiresIn: configService.get<string>('EXPIRES_IN'),  },
       }),
       inject: [ConfigService],
     }),

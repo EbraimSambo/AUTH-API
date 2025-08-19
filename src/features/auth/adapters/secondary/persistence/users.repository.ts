@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { UsersRepository } from '../../../application/ports/users.repository';
 import { User } from '../../../domain/entities/user.entity';
-import { DB_PROVIDER_TOKEN } from 'src/db/drizzle.provider';
-import { DatabaseService } from 'src/db/database.service';
-import { users } from 'src/db/user.schema';
+import { DB_PROVIDER_TOKEN } from 'src/root/infrastructure/db/drizzle.provider';
+import { DatabaseService } from 'src/root/infrastructure/db/database.service';
+import { userTable } from 'src/root/infrastructure/schemas/user/user.schema';
 
 @Injectable()
 export class UsersRepositoryImpl implements UsersRepository {
@@ -13,7 +13,7 @@ export class UsersRepositoryImpl implements UsersRepository {
   ) {}
 
   async findByEmail(email: string): Promise<User | null> {
-    const result = await this.db.query.users.findFirst({
+    const result = await this.db.query.userTable.findFirst({
       where: (user, {eq})=>eq(user.email, email)
     });
 
@@ -26,7 +26,7 @@ export class UsersRepositoryImpl implements UsersRepository {
 
   async save(user: Omit<User, 'id'>): Promise<User> {
     const [result] = await this.db
-      .insert(users)
+      .insert(userTable)
       .values({
         ...user,
         password: user.password as string
