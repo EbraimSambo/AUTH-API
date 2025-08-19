@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { UsersRepository } from '../ports/users.repository';
 import { SignUpDto } from 'src/auth/domain/dto/sign-up.dto';
 import { SignInDto } from 'src/auth/domain/dto/sign-in.dto';
+import { JwtPayload } from 'src/auth/domain/dto/jwt-payload.dto';
 
 @Injectable()
 export class AuthService {
@@ -40,7 +41,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const payload = { sub: user.id, email: user.email };
+    const payload: JwtPayload = { sub: user.id, email: user.email };
     const accessToken = await this.jwtService.signAsync(payload);
 
     return { accessToken };

@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { DrizzleUsersRepository } from './adapters/secondary/persistence/users.repository';
+import { UsersRepositoryImpl } from './adapters/secondary/persistence/users.repository';
 import { AuthService } from './application/services/auth.service';
 import { UsersRepository } from './application/ports/users.repository';
 import { AuthController } from './adapters/primary/http/auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DbModule } from 'src/db/db.module';
+import { JwtStrategy } from './adapters/primary/http/strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -26,8 +27,9 @@ import { DbModule } from 'src/db/db.module';
     AuthService,
     {
       provide: UsersRepository,
-      useClass: DrizzleUsersRepository,
+      useClass: UsersRepositoryImpl,
     },
+    JwtStrategy,
   ],
 })
 export class AuthModule {}

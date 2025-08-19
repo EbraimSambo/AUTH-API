@@ -6,7 +6,7 @@ import { DatabaseService } from 'src/db/database.service';
 import { users } from 'src/db/user.schema';
 
 @Injectable()
-export class DrizzleUsersRepository implements UsersRepository {
+export class UsersRepositoryImpl implements UsersRepository {
   constructor(
     @Inject(DB_PROVIDER_TOKEN) 
     private readonly db: DatabaseService,
